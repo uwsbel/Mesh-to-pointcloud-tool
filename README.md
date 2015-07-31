@@ -1,5 +1,5 @@
 # Mesh-to-pointcloud-tool
-Imports meshes and outputs a pointcloud with points that outline the meshes original triangles
+Imports meshes and outputs a pointcloud with points that outline the mesh's original triangles
 
 
 Requires GLM -
