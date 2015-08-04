@@ -19,15 +19,41 @@
 
 int main(int argc, char** args) {
 
-	double res_tol = 0.05;
+	std::string buff;
 
-	pointcloud pc = createPointcloud(2, res_tol);
-	mesh m = loadMesh("box.obj");
+	std::cout << "Enter filename of OBJ model\n> ";
+	std::cin >> buff;
+
+	auto found = buff.find(".obj");
+
+	if (found == std::string::npos) {
+		std::cout << "File must be OBJ\n";
+		exit(1);
+	}
+
+	mesh m = loadMesh(buff);
+
+	buff.clear();
+
+	std::cout << "Enter grid resolution\n> ";
+	std::cin >> buff;
+
+	double res_tol = std::strtod(buff.c_str(), nullptr);
+	buff.clear();
+
+	std::cout << "Enter grid side length\n> ";
+	std::cin >> buff;
+
+	size_t len = std::atol(buff.c_str());
+	buff.clear();
+
+	pointcloud pc = createPointcloud(len, res_tol);
+	
 
 	std::cout << "Pointcloud Size: " << pc.size() << " points\n";
 
 	auto v = moldPointcloud(m, pc, res_tol);
-
+	 
 	unsigned int inactive = 0;
 
 	std::ofstream out("out.csv");

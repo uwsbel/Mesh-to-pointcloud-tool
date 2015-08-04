@@ -80,24 +80,6 @@ struct line_t {
 	glm::dvec3 b;
 };
 
-bool intersectRay_Plane(plane_t& p, line_t& l) {
-	double d = glm::dot(p.n, p.a);
-
-	if (glm::dot(p.n, l.a - l.b) == 0) {
-		return false;
-	}
-
-	double t = (d - glm::dot(p.n, l.a)) / glm::dot(p.n, l.a - l.b);
-
-	glm::dvec3 nR = l.b * t;
-
-	if (t > 0.0 && t <= 1.0) {
-		return true;
-	}
-
-	return false;
-}
-
 double distancePoint_Plane(plane_m& p, glm::dvec3& r) {
 	//return (glm::dot(glm::dvec3(p.a, p.b, p.c), r) + p.d);
 	return glm::dot(glm::dvec3(p.a, p.b, p.c), r);
