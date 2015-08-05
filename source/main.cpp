@@ -20,6 +20,7 @@
 int main(int argc, char** args) {
 
 	std::string buff;
+	std::string name;
 
 	std::cout << "Enter filename of OBJ model\n> ";
 	std::cin >> buff;
@@ -30,6 +31,8 @@ int main(int argc, char** args) {
 		std::cout << "File must be OBJ\n";
 		exit(1);
 	}
+
+	name = buff.substr(0, found);
 
 	mesh m = loadMesh(buff);
 
@@ -61,7 +64,7 @@ int main(int argc, char** args) {
 	 
 	unsigned int inactive = 0;
 
-	std::ofstream out("out.csv");
+	std::ofstream out(name + ".csv");
 	out << "x,y,z\n";
 
 	for (auto p : v) {

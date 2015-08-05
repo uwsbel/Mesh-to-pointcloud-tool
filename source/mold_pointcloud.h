@@ -157,7 +157,8 @@ bool pointInTri(glm::dvec3& p, glm::dvec3& a, glm::dvec3& b, glm::dvec3& c) {
 	return sameSide(p, a, b, c) && sameSide(p, b, a, c) && sameSide(p, c, a, b);
 }
 
-// treats point like AABB and tests for intersection with triangle
+// Projects point onto triangle, verifies the point projected is within the triangle, and that
+// the distance from the projected point to the given point is within the tolerable range
 bool checkPointInTriangle(glm::dvec3& p, vertex& a, vertex& b, vertex& c, double tolerance) {
 
 	glm::dvec3 n = glm::normalize(glm::cross(b.position - a.position, c.position - a.position));
