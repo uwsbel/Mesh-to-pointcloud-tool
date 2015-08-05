@@ -26,7 +26,7 @@ struct pointcloud {
 
 	point& at(unsigned int idx) {
 		unsigned int x(0), y(0), z(0);
-		//return (&(points.front().front().front()))[idx];
+		
 		if (idx < points.size()) {
 			x = idx;
 			y = 0;

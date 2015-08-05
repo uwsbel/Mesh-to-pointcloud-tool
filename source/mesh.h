@@ -39,8 +39,8 @@ struct mesh {
 
 mesh loadMesh(const std::string& Filename) {
 
-	std::vector<tinyobj::shape_t> model_shapes;
-	std::vector<tinyobj::material_t> model_mtls;
+	std::vector<tinyobj::shape_t> model_shapes{ 0 };
+	std::vector<tinyobj::material_t> model_mtls{ 0 };
 	tinyobj::LoadObj(model_shapes, model_mtls, Filename.c_str());
 
 	mesh _ret;

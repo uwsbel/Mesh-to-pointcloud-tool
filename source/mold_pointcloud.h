@@ -14,20 +14,78 @@
 
 #include "mesh.h"
 #include "pointcloud.h"
+#include <thread>
+#include <mutex>
 #include <cstdint>
 
-std::vector<point> moldPointcloud(mesh&, pointcloud&, double);
+std::vector<point> moldPointcloud(mesh&, pointcloud&, double, size_t);
 bool checkPointInTriangle(glm::dvec3&, vertex&, vertex&, vertex&, double);
 
-std::vector<point> moldPointcloud(mesh& m, pointcloud& p, double tolerance) {
+std::vector<point> moldPointcloud(mesh& m, pointcloud& p, double tolerance, size_t threads) {
 
 	std::vector<point> ret;
+	std::mutex ret_mutex;
 
 	triangle_list t_;
 
 	t_ = m.triangles;
 
-	for (unsigned int i = 0; i < p.size(); i++) {
+
+	auto _worker = [&ret, &ret_mutex, &m, &t_, &p, tolerance](unsigned int start, unsigned int end) -> void {
+
+		std::vector<point> _points;
+
+		for (unsigned int i = start; i < end; i++) {
+
+			std::cout << "Checking point " << i << "\n";
+
+			glm::dvec3 pos = p.at(i).position;
+
+			for (auto t : t_) {
+				vertex tp0 = m.vertices[t.a];
+				vertex tp1 = m.vertices[t.b];
+				vertex tp2 = m.vertices[t.c];
+
+				if (checkPointInTriangle(pos, tp0, tp1, tp2, tolerance)) {
+					_points.push_back(p.at(i));
+					break;
+				}
+			}
+		}
+
+		ret_mutex.lock();
+		for (auto p : _points) {
+			ret.push_back(p);
+		}
+		ret_mutex.unlock();
+	};
+
+	std::vector<std::thread> _worker_threads;
+	std::vector<std::vector<point>> _worker_rets;
+
+	for (unsigned int i = 0; i < threads; i++) {
+		float chunk_size = (float)p.size() / (float)threads;
+
+		unsigned int start = i * chunk_size;
+		unsigned int end = ((i + 1) * chunk_size) - 1;
+		
+		if (i == threads - 1) {
+			end = p.size();
+		}
+
+		auto t = std::thread(_worker, start, end);
+		_worker_threads.push_back(std::move(t));
+	}
+
+
+
+
+
+	for (unsigned int i = 0; i < _worker_threads.size(); i++) {
+		_worker_threads[i].join();
+	}
+
+	/*for (unsigned int i = 0; i < p.size(); i++) {
 
 		std::cout << "Checking point " << i << "\n";
 
@@ -45,7 +103,7 @@ std::vector<point> moldPointcloud(mesh& m, pointcloud& p, double tolerance) {
 			
 		}
 
-	}
+	}*/
 
 	return ret;
 
@@ -120,7 +178,8 @@ bool checkPointInTriangle(glm::dvec3& p, vertex& a, vertex& b, vertex& c, double
 		tCenter
 	};
 
-	double d = distancePoint_Plane(tr, p - a.position);
+	auto v_l = p - a.position;
+	double d = distancePoint_Plane(tr, v_l);
 
 	glm::dvec3 d_v = d * n;
 	glm::dvec3 p_p = p - d_v;

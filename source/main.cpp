@@ -48,11 +48,16 @@ int main(int argc, char** args) {
 	buff.clear();
 
 	pointcloud pc = createPointcloud(len, res_tol);
-	
 
+	std::cout << "Enter thread count\n> ";
+	std::cin >> buff;
+
+	size_t threads = std::atol(buff.c_str());
+	buff.clear();
+	
 	std::cout << "Pointcloud Size: " << pc.size() << " points\n";
 
-	auto v = moldPointcloud(m, pc, res_tol);
+	auto v = moldPointcloud(m, pc, res_tol, threads);
 	 
 	unsigned int inactive = 0;
 
@@ -69,9 +74,6 @@ int main(int argc, char** args) {
 	std::cout << "Finished writing to file with " << inaa << " inactive points\n";
 
 	out.close();
-
-	float n;
-	std::cin >> n;
 
 	return 0;
 }
