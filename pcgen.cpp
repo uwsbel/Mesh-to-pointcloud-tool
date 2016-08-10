@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
 	for (int i = 0; i < point_cloud.size(); ++i)
 	{
 		// printf("point_cloud[%d]: %f, %f, %f\n", i, point_cloud[i].x, point_cloud[i].y, point_cloud[i].z);
-		printf("%f, %f, %f\n", i, point_cloud[i].x, point_cloud[i].y, point_cloud[i].z);
+		printf("%f, %f, %f\n", point_cloud[i].x, point_cloud[i].y, point_cloud[i].z);
 	}
 
 
