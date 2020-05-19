@@ -16,7 +16,7 @@
 
 // External libraries
 #include "tinyobjloader/tiny_obj_loader.h"
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
 
 #define EPSILON 0.000001
 
@@ -185,8 +185,8 @@ int triangle_intersection(const glm::dvec3   v1,  // Triangle vertices
 
 int isInsideMesh(mesh m,glm::dvec3 ray_origin)
 {
-	glm::dvec3 ray_dir1 = glm::dvec3(1,0.5,0.25);
-	glm::dvec3 ray_dir2 = glm::dvec3(-3,0.7,1);
+	glm::dvec3 ray_dir1 = glm::dvec3(5,0.5,0.25);
+	glm::dvec3 ray_dir2 = glm::dvec3(-3,0.7,10);
 	triangle t;
 	vertex v1, v2, v3;
 	int t_inter1, t_inter2;
@@ -215,7 +215,7 @@ int isInsideMesh(mesh m,glm::dvec3 ray_origin)
 	// 	pri
 	// }
 
-	if(((intersectCounter1 % 2) == 1) && ((intersectCounter1 % 2) == 1)) {
+	if(((intersectCounter1 % 2) == 1) && ((intersectCounter2 % 2) == 1) ) {
 		return 1;
 	}
 	else {
