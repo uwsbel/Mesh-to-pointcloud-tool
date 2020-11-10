@@ -9,10 +9,10 @@ int main(int argc, char* argv[])
 {
 	std::cout << "New program!" << std::endl;
 
-	std::string filename = "samples/L_share.obj";
+	std::string filename = "samples/tractor_wheel.obj";
 
 	struct mesh m = loadMesh(filename);
-	double delta = 0.001;
+	double delta = 0.05;
 	std::cout << "Loaded mesh" << std::endl;
 	// m.printInfo();
 	// m.printVertices();
